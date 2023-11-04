@@ -2,7 +2,7 @@ import { ResponseError, safeFetch } from "@/app/utils/fetchHandler";
 
 export async function GET(request: Request){
     try {
-        const users = await safeFetch(`${process.env.NEXT_API_URL}/users/`, undefined, false)
+        const users = await safeFetch(`${process.env.NEXT_API_URL}/users/`, {next: {revalidate: 60}})
         // Forward response
         return Response.json(users)
     } catch (err){

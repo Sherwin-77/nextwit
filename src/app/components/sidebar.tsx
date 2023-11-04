@@ -2,23 +2,18 @@ import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import { ResponseError, safeFetch } from "../utils/fetchHandler"
 import Loading from "../loading"
+import { UserCircleIcon } from "@heroicons/react/20/solid"
 
-interface UserInfo {
-    id: number,
-    email: string,
+
+interface UsersResponse {
+    _id: string,
     username: string,
-    image: string,
-    userAgent: string
-}
-interface UserResponse {
-    limit: number,
-    skip: 0,
-    total: number,
-    users: UserInfo[]
+    bio?: string,
+    profile?: string
 }
 
 export default function SideBar() {
-    const [suggestions, setSuggestions] = useState<UserResponse>()
+    const [suggestions, setSuggestions] = useState<UsersResponse[]>()
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
     // Related to https://stackoverflow.com/questions/77190419/why-useeffect-runs-multiple-times-in-next-js
@@ -30,7 +25,7 @@ export default function SideBar() {
         setErrorMessage(null)
         try {
             const data = await safeFetch("api/users")
-            setSuggestions(data as UserResponse)
+            setSuggestions(data as UsersResponse[])
         } catch (err) {
             if (err instanceof ResponseError) {
                 setErrorMessage(`Failed to fetch error status ${err.response.status}`)
@@ -43,19 +38,30 @@ export default function SideBar() {
         getSuggestion()
     })
     return (
-        <div className="flex flex-col bg-neutral-100 dark:bg-gray-800 rounded-xl p-3">
-            <span className="font-bold text-xl mb-3">Suggested</span>
-            {suggestions ? suggestions.users.map((obj) => (
-                <div className="flex flex-col mb-3" key={obj.username}>
+        <div className="flex flex-col bg-neutral-100 dark:bg-gray-800 rounded-xl overflow-hidden">
+            <span className="font-bold text-xl p-3">Suggested</span>
+            {suggestions ? suggestions.map((obj) => (
+                <div className="flex flex-col hover:bg-neutral-300 dark:hover:bg-gray-900 p-3 hover:cursor-pointer" key={obj._id}>
                     <div className="flex items-center">
-                        <div className="border rounded-full m-3">
-                            <Image src={obj.image} alt="Profile picture" width={50} height={50} />
-                        </div>
+                        {
+                            obj.profile ?
+                                <div className="border rounded-full m-3">
+                                    <Image src={obj.profile} alt="Profile picture" width={50} height={50} />
+                                </div>
+                                :
+                                <span className="w-[50px] me-3 my-1">
+                                    <UserCircleIcon />
+                                </span>
+                        }
                         {obj.username}
                     </div>
-                    <span className="text-slate-500">{obj.userAgent}</span>
+                    <span className="text-slate-500">{obj.bio ? obj.bio : "No description yet"}</span>
                 </div>
-            )) : errorMessage ?? <Loading />}
+            )) :
+                <div className="p-3">
+                    {errorMessage ?? <Loading />}
+                </div>
+            }
         </div>
     )
 }

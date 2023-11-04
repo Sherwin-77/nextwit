@@ -9,7 +9,7 @@ export default function HomePage() {
             <div className="max-w-2xl ms-10 m-3 w-full flex flex-col">
                 <InfinitePost />
             </div>
-            <div className="w-[350px] m-3 ms-10">
+            <div className="w-[350px] m-3 ms-10 hidden md:block">
                 <SideBar />
             </div>
         </main>

@@ -1,4 +1,4 @@
-import { UserIcon } from "@heroicons/react/24/solid"
+import { UserCircleIcon, UserIcon } from "@heroicons/react/24/solid"
 import Image from "next/image"
 import { useState, useEffect } from "react"
 
@@ -31,7 +31,7 @@ export default function Post(props: Props) {
     return (
         <article className="cursor-pointer p-3 flex border border-slate-300">
             <div className="me-5">
-                {props.profileUrl ? <Image src={props.profileUrl} height={50} width={50} alt="Profile" /> : <UserIcon className="h-auto w-[50px]" />}
+                {props.profileUrl ? <Image src={props.profileUrl} height={50} width={50} alt="Profile" /> : <UserCircleIcon className="h-auto w-[50px]" />}
             </div>
             <div className="flex flex-col">
                 <div>
@@ -39,7 +39,7 @@ export default function Post(props: Props) {
                     <span className="text-slate-500">{curDate}</span>
                 </div>
                 <p>{props.content}</p>
-                <div className="my-3 max-h-[510px] max-w-[510px] w-[510px] mb-3 overflow-hidden rounded-3xl">
+                <div className="my-3 max-h-[510px] max-w-[510px] mb-3 overflow-hidden rounded-3xl">
                     {props.mediasUrl.map((url, i) => <Image key={i} placeholder="blur" blurDataURL="/logo.png" src={url} width={510} height={510} quality={50} className="object-cover" alt="post images" />)}
                 </div>
             </div>
