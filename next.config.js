@@ -1,8 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        domains: ["picsum.photos", "robohash.org"]
+        remotePatterns: [
+            {protocol: "https", hostname: "picsum.photos"}, 
+            {protocol: "https", hostname: "robohash.org"}
+        ]
     },
+    logging: {
+        fetches: {
+            fullUrl: true
+        }
+    }
 }
 
 module.exports = nextConfig
