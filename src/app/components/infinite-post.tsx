@@ -1,41 +1,35 @@
 "use client"
 
-interface PostResponse {
-  id: number,
-  author: string,
-  width: number,
-  height: number,
-  url: string,
-  download_url: string
-}
-
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useContext } from "react"
 import { safeFetch } from "../utils/fetchHandler"
 import Post from "./post"
 import Loading from "../loading"
+import { UserPost } from "@/@types/user-post"
+import { PostContext } from "../contexts/PostContext"
 
 export default function InfinitePost() {
-  const [posts, setPosts] = useState<PostResponse[]>([{
-    id: 6969,
-    author: "Sewenty",
-    width: 702,
-    height: 1199,
-    url:"/tes.jpg",
-    download_url:"/tes.jpg"
-  }])
+  const {posts, setPosts} = useContext(PostContext)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  // Ref by page number
   const [page, setPage] = useState(1)
   const pageRef = useRef<number>(page)
+
+  // NEW: Ref by lastDate
+  const [lastDate, setLastDate] = useState(new Date())
+  const lastDateRef = useRef<Date>(lastDate)
   const observerTarget = useRef(null);
   async function fetchPost() {
     setError(null)
     setIsLoading(true)
-    console.log(`Fetch page ${pageRef.current}`)
     try {
-      const data = await safeFetch(`https://picsum.photos/v2/list?page=${pageRef.current}`)
+      // const data = await safeFetch(`https://picsum.photos/v2/list?page=${pageRef.current}`)
+      const data = await safeFetch(`api/posts?lastDate=${lastDateRef.current.toISOString()}&limit=5`)
       setPosts((prev) => [...prev, ...data])
-      setPage(prev => prev + 1)
+      const cur = data.length > 0 ?  new Date(data[data.length-1].dateCreated) : new Date()
+      setLastDate(cur)
+      setPage((prev) => prev + 1)
     } catch (e) {
       if (typeof e === "string") setError(e);
       else if (e instanceof Error) setError(e.message)
@@ -46,6 +40,9 @@ export default function InfinitePost() {
   useEffect(() => {
     pageRef.current = page
   }, [page])
+  useEffect(() => {
+    lastDateRef.current = lastDate
+  }, [lastDate])
   useEffect(() => {
     const observer = new IntersectionObserver(
       entries => {
@@ -65,7 +62,7 @@ export default function InfinitePost() {
   }, [observerTarget]);
   return (
     <>
-      {posts.map((data, i) => (<Post key={i} userName={data.author} createdAt={new Date(Date.now())} content="UwU" mediasUrl={[data.download_url]} />))}
+      {posts.map((data, i) => (<Post key={i} props={data}/>))}
       {isLoading && <Loading />}
       {error && <p>Failed to refresh: {error}</p>}
       <div ref={observerTarget} className="p-3"></div>

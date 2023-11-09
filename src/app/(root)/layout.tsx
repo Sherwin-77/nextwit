@@ -1,7 +1,9 @@
 "use client"
 
 import NavBar from "@/app/components/navbar"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
+import { PostContext } from "../contexts/PostContext"
+import { UserPost } from "@/@types/user-post"
 
 
 export default function ClientLayout({
@@ -27,13 +29,31 @@ export default function ClientLayout({
       window.removeEventListener("scroll", navbarScroll)
     }
   })
+  const [posts, setPosts] = useState<UserPost[]>([{
+    _id: "Any",
+    contents: "This is caption of contents lorem",
+    author: {
+      _id: "anyID",
+      username: "SewentySewen"
+    },
+    images: ["/tes.jpg"],
+    comments: [],
+    likes: [],
+    dateCreated: new Date().toDateString(),
+    _v: 1
+  }])
   return (
     <>
       <header className="fixed w-full top-0 transition-all" ref={navbarRef} >
         <NavBar />
       </header>
       <div className="mt-[77px]"></div>
-      {children}
+      <PostContext.Provider value={{
+        posts: posts,
+        setPosts: setPosts
+      }}>
+        {children}
+      </PostContext.Provider>
     </>
   )
 }

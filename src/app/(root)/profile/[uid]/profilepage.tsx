@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react"
 
 import { safeFetch, ResponseError } from "@/app/utils/fetchHandler"
 
-import InfinitePost from "@/app/components/infinitescroll"
+import InfinitePost from "@/app/components/infinite-post"
 import SideBar from "@/app/components/sidebar"
 import Loading from "@/app/loading"
 
