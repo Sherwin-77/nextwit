@@ -30,7 +30,7 @@ export default function UploadPost() {
     const {setPosts} = useContext(PostContext)
     useEffect(() => {
         if(state.userPost) setPosts((prev) => ([state.userPost, ...prev]))
-    }, state)
+    }, [state])
     return (
         <div className="w-full bg-neutral-100 dark:bg-slate-800 rounded-xl mb-5">
             <form className="p-5 mb-3" action={(formData: FormData) => {
