@@ -1,7 +1,7 @@
 "use client"
-import InfinitePost from "@/app/components/infinite-post"
-import SideBar from "@/app/components/sidebar"
-import UploadPost from "@/app/components/upload-post"
+import InfinitePost from "@/components/infinite-post"
+import SideBar from "@/components/sidebar"
+import UploadPost from "@/components/upload-post"
 
 
 export default function HomePage() {

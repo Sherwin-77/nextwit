@@ -1,8 +1,8 @@
 "use client"
 
-import NavBar from "@/app/components/navbar"
+import NavBar from "@/components/navbar"
 import { useEffect, useRef, useState } from "react"
-import { PostContext } from "../contexts/PostContext"
+import { PostContext } from "@/contexts/PostContext"
 import { UserPost } from "@/@types/user-post"
 
 

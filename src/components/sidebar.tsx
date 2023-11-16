@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
-import { ResponseError, safeFetch } from "../utils/fetchHandler"
-import Loading from "../loading"
+import { ResponseError, safeFetch } from "../app/utils/fetchHandler"
+import Loading from "../app/loading"
 import { UserCircleIcon } from "@heroicons/react/20/solid"
 
 
@@ -38,10 +38,10 @@ export default function SideBar() {
         getSuggestion()
     })
     return (
-        <div className="flex flex-col bg-neutral-100 dark:bg-gray-800 rounded-xl overflow-hidden">
+        <div className="flex flex-col bg-sky-200 dark:bg-gray-800 rounded-xl overflow-hidden">
             <span className="font-bold text-xl p-3">Suggested</span>
             {suggestions ? suggestions.map((obj) => (
-                <div className="flex flex-col hover:bg-neutral-300 dark:hover:bg-gray-900 p-3 hover:cursor-pointer" key={obj._id}>
+                <div className="flex flex-col hover:bg-neutral-100 dark:hover:bg-gray-900 p-3 hover:cursor-pointer" key={obj._id}>
                     <div className="flex items-center">
                         {
                             obj.profile ?

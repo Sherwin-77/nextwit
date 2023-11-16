@@ -1,11 +1,10 @@
 "use client"
 
 import { useState, useEffect, useRef, useContext } from "react"
-import { safeFetch } from "../utils/fetchHandler"
+import { safeFetch } from "../app/utils/fetchHandler"
 import Post from "./post"
-import Loading from "../loading"
-import { UserPost } from "@/@types/user-post"
-import { PostContext } from "../contexts/PostContext"
+import Loading from "../app/loading"
+import { PostContext } from "@/contexts/PostContext"
 
 export default function InfinitePost() {
   const {posts, setPosts} = useContext(PostContext)

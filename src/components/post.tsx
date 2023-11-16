@@ -23,7 +23,7 @@ export default function Post({props}: {props: UserPost}) {
     if (props.images.length > 1) oneHeight = 255
     if (props.images.length > 2) oneWidth = 255
     return (
-        <article className="cursor-pointer p-3 flex border border-slate-300">
+        <article className="cursor-pointer p-3 mb-3 rounded flex border border-gray-300 dark:border-gray-600 bg-sky-100 dark:bg-gray-900">
             <div className="me-5">
                 {props.author.profile ? <Image src={props.author.profile} height={50} width={50} alt="Profile" /> : <UserCircleIcon className="h-auto w-[50px]" />}
             </div>
