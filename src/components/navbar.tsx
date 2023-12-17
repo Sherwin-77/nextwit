@@ -1,27 +1,46 @@
-"use client"
-import { Fragment, useState, useEffect } from 'react'
-import { usePathname } from 'next/navigation'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import Image from 'next/image'
-import { XMarkIcon, HomeIcon, Bars4Icon, BellIcon, MagnifyingGlassIcon, ChatBubbleLeftEllipsisIcon } from '@heroicons/react/24/solid'
+"use client";
+import { Fragment, useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { Disclosure, Menu, Transition } from "@headlessui/react";
+import Image from "next/image";
+import {
+  XMarkIcon,
+  HomeIcon,
+  Bars4Icon,
+  BellIcon,
+  MagnifyingGlassIcon,
+  ChatBubbleLeftEllipsisIcon,
+  UserCircleIcon,
+} from "@heroicons/react/24/solid";
+import { signOut, useSession } from "next-auth/react";
+import { safeFetch } from "@/app/utils/fetchHandler";
 
 const navigation = [
   { name: "Home", href: "/home", current: false, icon: HomeIcon },
-  { name: "Search", href: '#', current: false, icon: MagnifyingGlassIcon },
-  { name: "Chat", href: '#', current: false, icon: ChatBubbleLeftEllipsisIcon },
-]
+  { name: "Search", href: "#", current: false, icon: MagnifyingGlassIcon },
+  { name: "Chat", href: "#", current: false, icon: ChatBubbleLeftEllipsisIcon },
+];
 
-const iconClass = "h-8 w-8 mx-3"
+const iconClass = "h-8 w-8 mx-3";
 function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function NavBar() {
-  const pathName = usePathname()
+  const pathName = usePathname();
+  const [imageUrl, setImageUrl] = useState<string | undefined>();
   navigation.map((obj) => {
-    obj.current = obj.href === pathName
-    return obj
-  })
+    obj.current = obj.href === pathName;
+    return obj;
+  });
+  const { data: session, status } = useSession();
+  useEffect(() => {
+    if (status === "authenticated") {
+      safeFetch(`api/user/${session.user.id}`).then((r) =>
+        setImageUrl(r.profile)
+      );
+    }
+  }, [status]);
   return (
     <Disclosure as="nav" className="bg-sky-500 dark:bg-indigo-900">
       {({ open }) => (
@@ -44,10 +63,17 @@ export default function NavBar() {
                   )}
                 </Disclosure.Button>
               </div>
+              {/* Logo */}
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center me-5">
                   <a href="/">
-                    <Image src="/logo.png" height={100} width={100} alt="logo" className="h-10 w-auto" />
+                    <Image
+                      src="/logo.png"
+                      height={100}
+                      width={100}
+                      alt="logo"
+                      className="h-10 w-auto"
+                    />
                   </a>
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
@@ -57,10 +83,12 @@ export default function NavBar() {
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current ? 'bg-neutral-100 dark:bg-gray-900' : 'hover:bg-gray-300 text-gray-900 dark:text-gray-400 hover:text-black dark:hover:bg-indigo-600 dark:hover:text-white',
-                          'rounded-md px-3 py-2 text-sm font-medium'
+                          item.current
+                            ? "bg-neutral-100 dark:bg-gray-900"
+                            : "hover:bg-gray-300 text-gray-900 dark:text-gray-400 hover:text-black dark:hover:bg-indigo-600 dark:hover:text-white",
+                          "rounded-md px-3 py-2 text-sm font-medium"
                         )}
-                        aria-current={item.current ? 'page' : undefined}
+                        aria-current={item.current ? "page" : undefined}
                       >
                         <item.icon className={iconClass} />
                       </a>
@@ -68,6 +96,8 @@ export default function NavBar() {
                   </div>
                 </div>
               </div>
+
+              {/* Side */}
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <button
                   type="button"
@@ -79,61 +109,79 @@ export default function NavBar() {
                 </button>
 
                 {/* Profile dropdown */}
-                <Menu as="div" className="relative ml-3">
-                  <div>
-                    <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 dark:focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                      <span className="absolute -inset-1.5" />
-                      <span className="sr-only">Open user menu</span>
-                      <img
-                        className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
-                      />
-                    </Menu.Button>
-                  </div>
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-75"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-100"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-75"
-                  >
-                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white dark:bg-gray-700 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(active ? 'bg-gray-100 dark:bg-gray-900' : '', 'block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 dark:hover:bg-gray-800')}
-                          >
-                            Profile
-                          </a>
+                {status === "authenticated" ? (
+                  <Menu as="div" className="relative ml-3">
+                    <div>
+                      <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 dark:focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                        <span className="absolute -inset-1.5" />
+                        <span className="sr-only">Open user menu</span>
+                        {imageUrl ? (
+                          <img
+                            className="h-8 w-8 rounded-full"
+                            src={imageUrl}
+                            alt="Profilos imagos"
+                          />
+                        ) : (
+                          <UserCircleIcon className="w-10 h-10"/>
                         )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(active ? 'bg-gray-100 dark:bg-gray-900' : '', 'block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 dark:hover:bg-gray-800')}
-                          >
-                            Settings
-                          </a>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(active ? 'bg-gray-100 dark:bg-gray-900' : '', 'block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 dark:hover:bg-gray-800')}
-                          >
-                            Sign out
-                          </a>
-                        )}
-                      </Menu.Item>
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
+                      </Menu.Button>
+                    </div>
+                    <Transition
+                      as={Fragment}
+                      enter="transition ease-out duration-100"
+                      enterFrom="transform opacity-0 scale-75"
+                      enterTo="transform opacity-100 scale-100"
+                      leave="transition ease-in duration-100"
+                      leaveFrom="transform opacity-100 scale-100"
+                      leaveTo="transform opacity-0 scale-75"
+                    >
+                      <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white dark:bg-gray-700 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Menu.Item>
+                          {({ active }) => (
+                            <a
+                              href="#"
+                              className={classNames(
+                                active ? "bg-gray-100 dark:bg-gray-900" : "",
+                                "block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 dark:hover:bg-gray-800"
+                              )}
+                            >
+                              Profile
+                            </a>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <a
+                              href="#"
+                              className={classNames(
+                                active ? "bg-gray-100 dark:bg-gray-900" : "",
+                                "block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 dark:hover:bg-gray-800"
+                              )}
+                            >
+                              Settings
+                            </a>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <a
+                              href="#"
+                              onClick={async () => await signOut()}
+                              className={classNames(
+                                active ? "bg-gray-100 dark:bg-gray-900" : "",
+                                "block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 dark:hover:bg-gray-800"
+                              )}
+                            >
+                              Sign out
+                            </a>
+                          )}
+                        </Menu.Item>
+                      </Menu.Items>
+                    </Transition>
+                  </Menu>
+                ) : (
+                  <a href="/login">Log In</a>
+                )}
               </div>
             </div>
           </div>
@@ -146,10 +194,12 @@ export default function NavBar() {
                   as="a"
                   href={item.href}
                   className={classNames(
-                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-300 hover:text-black dark:hover:text-white dark:hover:bg-indigo-600',
-                    'block rounded-md px-3 py-2 text-base font-medium'
+                    item.current
+                      ? "bg-gray-900 text-white"
+                      : "text-gray-300 hover:bg-gray-300 hover:text-black dark:hover:text-white dark:hover:bg-indigo-600",
+                    "block rounded-md px-3 py-2 text-base font-medium"
                   )}
-                  aria-current={item.current ? 'page' : undefined}
+                  aria-current={item.current ? "page" : undefined}
                 >
                   {item.name}
                 </Disclosure.Button>
@@ -159,5 +209,5 @@ export default function NavBar() {
         </>
       )}
     </Disclosure>
-  )
+  );
 }
