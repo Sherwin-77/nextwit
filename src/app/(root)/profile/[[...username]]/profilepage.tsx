@@ -17,7 +17,6 @@ interface UserResponse {
 
 export default function ProfilePage({user, session, status}: {user: UserResponse, session: Session | null, status: "authenticated" | "unauthenticated"}) {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  console.log("Render")
   useEffect(() => {
     if(user) window.history.replaceState(window.history.state, '', `/profile/${user.username}`);
   })
