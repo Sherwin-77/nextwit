@@ -12,7 +12,7 @@ export default function HomePage() {
         <main className="w-full flex justify-center items-stretch">
             <div className="max-w-2xl ms-10 m-3 w-full flex flex-col">
                 {status === "authenticated" && <UploadPost session={session} />}
-                <InfinitePost />
+                <InfinitePost session={session} status={status} />
             </div>
             <div className="w-[350px] m-3 ms-10 hidden md:block">
                 <SideBar />

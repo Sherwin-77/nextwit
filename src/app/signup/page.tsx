@@ -22,22 +22,13 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordHidden, setPasswordHidden] = useState(true);
+  const [remember, setRemember] = useState(false);
   const [inputStatus, setStatus] = useState({
     username: false,
     email: false,
     password: false,
   });
   const { data: session, status } = useSession();
-  if (status === "loading") return <Loading />;
-  if (status === "authenticated" && session.user) return redirect("/home");
-
-  if (formState.redirect && !formState.isError) {
-    signIn("credentials", {
-      redirect: false,
-      username,
-      password,
-    });
-  }
   useEffect(() => {
     const checkApi = () => {
       fetch("api/signup-test", {
@@ -74,6 +65,16 @@ export default function SignUp() {
     };
   }, [username, email, password]);
   const disabled = Object.values(inputStatus).every(Boolean);
+  if (status === "loading") return <Loading />;
+  if (status === "authenticated" && session.user) return redirect("/home");
+  if (formState.redirect && !formState.isError) {
+    signIn("credentials", {
+      redirect: false,
+      username,
+      password,
+      longer: remember,
+    });
+  }
   return (
     <main className="flex flex-col justify-center items-center p-10">
       <h1 className="text-3xl mb-10">Get your account now</h1>
@@ -104,8 +105,8 @@ export default function SignUp() {
         </label>
         <div>
           <input
-            type="email"
             name="email"
+            type="email"
             id="email"
             className="px-3 py-2 mb-5 dark:bg-slate-700 text-black dark:text-white rounded-md dark:focus:outline-none dark:focus:ring dark:focus:ring-yellow-300"
             onChange={(e) => setEmail(e.target.value)}
@@ -153,6 +154,19 @@ export default function SignUp() {
         >
           {formState?.message}
         </span>
+        <div className="flex items-center mb-3">
+          <input
+            className="me-3"
+            type="checkbox"
+            name="remember"
+            id="remember"
+            checked={remember}
+            onChange={() => setRemember(!remember)}
+          />
+          <label htmlFor="remember" className="opacity-60">
+            Remember me for 90 days
+          </label>
+        </div>
         <SubmitButton
           message="Signup"
           loadingMessage="Loading"

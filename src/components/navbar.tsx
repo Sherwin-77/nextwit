@@ -12,8 +12,9 @@ import {
   ChatBubbleLeftEllipsisIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/solid";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { safeFetch } from "@/app/utils/fetchHandler";
+import { Session } from "next-auth";
 
 const navigation = [
   { name: "Home", href: "/home", current: false, icon: HomeIcon },
@@ -26,23 +27,23 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function NavBar() {
+export default function NavBar({session, status}: {session: Session | null, status: "authenticated" | "loading" | "unauthenticated"}) {
   const pathName = usePathname();
   const [imageUrl, setImageUrl] = useState<string | undefined>();
   navigation.map((obj) => {
     obj.current = obj.href === pathName;
     return obj;
   });
-  const { data: session, status } = useSession();
   useEffect(() => {
     if (status === "authenticated") {
-      safeFetch(`api/user/${session.user.id}`).then((r) =>
+      // I swear this relative url is askldfjk
+      safeFetch(`${window.location.origin}/api/user/${session?.user.id}`).then((r) =>
         setImageUrl(r.profile)
       );
     }
   }, [status]);
   return (
-    <Disclosure as="nav" className="bg-sky-500 dark:bg-indigo-900">
+    <Disclosure as="nav" className="bg-sky-500/30 dark:bg-indigo-500/30 backdrop-blur-xl">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -122,7 +123,7 @@ export default function NavBar() {
                             alt="Profilos imagos"
                           />
                         ) : (
-                          <UserCircleIcon className="w-10 h-10"/>
+                          <UserCircleIcon className="w-10 h-10 text-white"/>
                         )}
                       </Menu.Button>
                     </div>
@@ -139,7 +140,7 @@ export default function NavBar() {
                         <Menu.Item>
                           {({ active }) => (
                             <a
-                              href="#"
+                              href="/profile"
                               className={classNames(
                                 active ? "bg-gray-100 dark:bg-gray-900" : "",
                                 "block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 dark:hover:bg-gray-800"

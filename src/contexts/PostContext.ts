@@ -1,9 +1,9 @@
-import { UserPost } from "@/@types/user-post"
+import { UserPost, UserPostDetailed } from "@/@types/user-post"
 import {createContext, SetStateAction, Dispatch} from "react"
 
 export const PostContext = createContext<{
-    posts: UserPost[],
-    setPosts: Dispatch<SetStateAction<UserPost[]>>
+    posts: (UserPost | UserPostDetailed)[],
+    setPosts: Dispatch<SetStateAction<(UserPost | UserPostDetailed)[]>>
 }>({
     posts: [],
     setPosts: (prev) => prev

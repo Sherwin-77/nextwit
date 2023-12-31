@@ -15,7 +15,7 @@ export default function SubmitButton({
   pending ||= doPending
   return (
     <button
-      className="bg-sky-300 dark:bg-sky-700 enabled:hover:bg-white enabled:dark:hover:bg-sky-500 dark:text-white text-black py-3 px-8 rounded-full disabled:opacity-75 disabled:cursor-not-allowed"
+      className="bg-gray-700 dark:bg-sky-700 enabled:hover:bg-gray-500 enabled:dark:hover:bg-sky-500 text-white py-3 px-8 rounded-full disabled:opacity-75 disabled:cursor-not-allowed"
       aria-disabled={pending}
       disabled={pending || disabled}
     >

@@ -1,13 +1,10 @@
-import NextAuth from "next-auth"
+import NextAuth, { Session, User } from "next-auth"
+import { AdapterUser } from "next-auth/adapters";
+import { JWT } from "next-auth/jwt";
 import CredentialsProvider from 'next-auth/providers/credentials';
 // import GoogleProvider from "next-auth/providers/google"
 
 export const authOptions = {
-
-}
-
-// TODO: Implement OAuth
-const handler = NextAuth({
   /**
    * Note for myself in future:
    *  JWT Flow
@@ -23,13 +20,15 @@ const handler = NextAuth({
           label: "Username",
           type: "text"
         },
-        password: { label: "Password", type: "password" }
+        password: { label: "Password", type: "password" },
+        longer: {label: "Remember me", type: "checkbox"}
       },
       async authorize(credentials) {
         if (!credentials) return null;
         const payload = {
           username: credentials.username,
           password: credentials.password,
+          longer: credentials.longer ?? false
         };
 
         const res = await fetch(`${process.env.NEXT_API_URL}/login`, {
@@ -58,17 +57,11 @@ const handler = NextAuth({
     //     clientSecret: process.env.GOOGLE_CLIENT_SECRET
     // })
   ],
-  theme: {
-    colorScheme: "auto",
-    brandColor: "#0062ff",
-    buttonText: "#0062ff",
-    logo: "/logo.png"
-  },
   pages: {
     signIn: "/login"
   },
   callbacks: {
-    jwt: async ({ token, user }) => {
+    jwt: async ({ token , user }: {token: JWT, user: User | AdapterUser}) => {
       if (user) {
         // This will be executed at login
         token = {
@@ -81,16 +74,19 @@ const handler = NextAuth({
       }
       return token; 
     },
-    session: async ({ session, token }) => {
+    session: async ({ session, token }: {session: Session, token: JWT}) => {
       if (token && session) {
         session.user = token.user
         session.accessToken = token.accessToken;
         session.isExpired = token.expiredAt * 1000 < Date.now()  // Expired session handled on client side
       }
-      console.log(session);
+      // console.log(session);
       return session;
     },
   }
-})
+}
+
+// TODO: Implement OAuth
+const handler = NextAuth(authOptions)
 
 export { handler as GET, handler as POST }

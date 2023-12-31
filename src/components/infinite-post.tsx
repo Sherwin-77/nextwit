@@ -5,8 +5,9 @@ import { safeFetch } from "../app/utils/fetchHandler"
 import Post from "./post"
 import Loading from "../app/loading"
 import { PostContext } from "@/contexts/PostContext"
+import { Session } from "next-auth"
 
-export default function InfinitePost() {
+export default function InfinitePost({session, status}: {session: Session | null, status: "authenticated" | "unauthenticated" | "loading"}) {
   const {posts, setPosts} = useContext(PostContext)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -61,7 +62,7 @@ export default function InfinitePost() {
   }, [observerTarget]);
   return (
     <>
-      {posts.map((data, i) => (<Post key={i} props={data}/>))}
+      {posts.map((data, i) => (<Post key={i} props={data} status={status} session={session} />))}
       {isLoading && <Loading />}
       {error && <p>Failed to refresh: {error}</p>}
       <div ref={observerTarget} className="p-3"></div>

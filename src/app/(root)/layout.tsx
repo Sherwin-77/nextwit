@@ -4,6 +4,7 @@ import NavBar from "@/components/navbar"
 import { useEffect, useRef, useState } from "react"
 import { PostContext } from "@/contexts/PostContext"
 import { UserPost } from "@/@types/user-post"
+import { signOut, useSession } from "next-auth/react"
 
 
 export default function ClientLayout({
@@ -23,6 +24,7 @@ export default function ClientLayout({
     }
     prevScroll = currentScroll
   }
+  const { data: session, status } = useSession();
   useEffect(() => {
     window.addEventListener("scroll", navbarScroll)
     return () => {
@@ -42,10 +44,15 @@ export default function ClientLayout({
     dateCreated: new Date().toDateString(),
     _v: 1
   }])
+  if(status == "authenticated" && session.isExpired){
+    signOut({redirect: false}).then()
+    return
+  }
+  // FIXME: Check out https://github.com/vercel/next.js/issues/58699 later
   return (
     <>
       <header className="fixed w-full top-0 transition-all" ref={navbarRef} >
-        <NavBar />
+        <NavBar session={session} status={status} />
       </header>
       <div className="mt-[77px]"></div>
       <PostContext.Provider value={{

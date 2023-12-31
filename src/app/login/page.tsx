@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [passwordHidden, setPasswordHidden] = useState(true);
+  const [remember, setRemember] = useState(false);
   const { data: session, status } = useSession();
   if (status === "loading") return <Loading />;
   if (status === "authenticated" && session.user) return redirect("/home");
@@ -18,7 +19,7 @@ export default function LoginPage() {
     <main className="flex flex-col justify-center items-center p-10">
       <h1 className="text-3xl mb-10">Login</h1>
       <form
-        className="max-w-xs bg-sky-600 dark:bg-gray-900 dark:shadow-neon rounded-xl py-3 px-5 flex flex-col"
+        className="border border-gray-300 shadow-md dark:border-none max-w-xs dark:bg-gray-900 dark:shadow-neon rounded-xl py-5 px-5 flex flex-col"
         onSubmit={async (e) => {
           // Ref https://stackoverflow.com/questions/71956621/next-auth-4-session-returns-null-next-js
           e.preventDefault();
@@ -36,42 +37,68 @@ export default function LoginPage() {
             redirect: false,
             username,
             password,
+            longer: remember,
           });
           setLoading(false);
           if (!res || res.error) {
             setErr("invalid email or password");
-          } 
+          }
         }}
       >
-        <label htmlFor="username" className="mb-1">
-          Username
-        </label>
-        <input
-          type="text"
-          name="username"
-          id="username"
-          className="px-3 py-2 mb-5 dark:bg-slate-700 text-black dark:text-white rounded-md dark:focus:outline-none dark:focus:ring dark:focus:ring-yellow-300 inline"
-          required
-        />
-        <label htmlFor="password" className="mb-1">
-          Password
-        </label>
-        <div className="relative inline-flex">
+        <div className="relative inline-block mb-5">
+          <input
+            type="text"
+            className="border border-gray-400 dark:border-none ps-3 pe-10 peer pt-5 pb-2 dark:bg-slate-700 text-black dark:text-white rounded-md dark:focus:outline-none dark:focus:ring dark:focus:ring-yellow-300"
+            name="username"
+            id="username"
+            placeholder=""
+            required
+          />
+          <label
+            htmlFor="username"
+            className="absolute peer-placeholder-shown:top-1/2 top-3 left-3 -translate-y-1/2 cursor-text text-xs peer-placeholder-shown:text-base peer-focus:top-3 peer-focus:text-xs text-gray-500 dark:text-gray-300 transition-all"
+          >
+            Username
+          </label>
+        </div>
+        <div className="relative inline-flex mb-5">
           <input
             type={passwordHidden ? "password" : "text"}
             name="password"
             id="password"
-            className=" ps-3 pe-10 py-2 mb-5 dark:bg-slate-700 text-black dark:text-white rounded-md dark:focus:outline-none dark:focus:ring dark:focus:ring-yellow-300"
+            className="border border-gray-400 dark:border-none ps-3 pe-10 peer pt-5 pb-2 dark:bg-slate-700 text-black dark:text-white rounded-md dark:focus:outline-none dark:focus:ring dark:focus:ring-yellow-300"
+            placeholder=""
             required
           />
+            <label
+            htmlFor="password"
+            className="absolute peer-placeholder-shown:top-1/2 top-3 left-3 -translate-y-1/2 cursor-text text-xs peer-placeholder-shown:text-base peer-focus:top-3 peer-focus:text-xs text-gray-500 dark:text-gray-300 transition-all"
+          >
+            Password
+          </label>
           <div onClick={() => setPasswordHidden((prev) => !prev)}>
             {passwordHidden ? (
-              <EyeIcon className="absolute top-2 right-2 w-6 hover:cursor-pointer" />
+              <EyeIcon className="absolute top-3 right-2 w-7 hover:cursor-pointer" />
             ) : (
-              <EyeSlashIcon className="absolute top-2 right-2 w-6 hover:cursor-pointer" />
+              <EyeSlashIcon className="absolute top-3 right-2 w-7 hover:cursor-pointer" />
             )}
           </div>
         </div>
+
+        <div className="flex items-center mb-5">
+          <input
+            className="me-3"
+            type="checkbox"
+            name="remember"
+            id="remember"
+            checked={remember}
+            onChange={() => setRemember(!remember)}
+          />
+          <label htmlFor="remember" className="opacity-60">
+            Remember me for 90 days
+          </label>
+        </div>
+        <span></span>
         <span
           className={
             "flex justify-end mb-2 me-3 " +
@@ -85,6 +112,15 @@ export default function LoginPage() {
           loadingMessage="Loading"
           doPending={loading}
         />
+        <span className="mt-3 mb-1">
+          <span className="opacity-60">Don't have account?</span>{" "}
+          <a
+            className="no-underline hover:underline opacity-100 text-sky-600"
+            href="/signup"
+          >
+            Sign up
+          </a>
+        </span>
       </form>
     </main>
   );

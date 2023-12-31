@@ -5,7 +5,6 @@ import { revalidateTag } from "next/cache"
 
 export default async function handleSubmit(session: Session, prevState: any, formData: FormData) {
     try {
-
         const res = await fetch(`${process.env.NEXT_API_URL}/post`, {
             method: "POST",
             headers: {
@@ -26,6 +25,7 @@ export default async function handleSubmit(session: Session, prevState: any, for
             const resData = await resPost.json()
             return { message: "Upload success", isError: false, userPost: resData, postID: resData._id}
         }
+        else if(res.status == 401) return {message: "Unauthorized error. Please try to re-login", isError: true}
         else return { message: `Failed to upload error status ${res.status}`, isError: true }
     } catch (e) {
         return { message: "Failed to upload", isError: true }
