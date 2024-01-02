@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { redirect } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
-import Loading from "../loading";
+import Loading from "@/app/loading";
 
 const initialState = {
   message: null,

@@ -5,7 +5,7 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import { signIn, useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useState } from "react";
-import Loading from "../loading";
+import Loading from "@/app/loading";
 
 export default function LoginPage() {
   const [err, setErr] = useState<string | null>(null);

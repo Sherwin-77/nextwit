@@ -14,14 +14,16 @@ import NextAuthProvider from "./provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
-  children,
+  children
 }: {
   children: React.ReactNode;
 }) {
   return (
     <html lang="en">
       <body className={inter.className + " h-screen"}>
-        <NextAuthProvider>{children}</NextAuthProvider>
+        <NextAuthProvider>
+          {children}
+        </NextAuthProvider>
       </body>
     </html>
   );
