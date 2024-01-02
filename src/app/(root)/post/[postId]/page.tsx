@@ -4,7 +4,6 @@ import { Metadata, ResolvingMetadata } from "next";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import PostPage from "./postpage";
-import {headers} from "next/headers"
 
 type Props = {
   params: { postId: string };
