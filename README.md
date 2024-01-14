@@ -4,10 +4,6 @@ This is another social media site created with [Next.js](https://nextjs.org/) an
 Before running, create `.env.local` and fill the following field
 ```env
 NEXT_API_URL=
-# Below are fields that will be removed as more feature rolled out
-GUEST_USERNAME= 
-GUEST_EMAIL=
-GUEST_PASSWORD=
 ```
 
 Then, run the development server:
@@ -29,12 +25,14 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 | Features                                          | Status                |
 |---------------------------------------------------|-----------------------|
 | Upload post                                       | :heavy_check_mark:    |
-| Edit post                                         | :x:                   |
-| Like post                                         | :x:                   |
-| Comment post                                      | :x:                   |
-| Delete post                                       | :x:                   |
+| Edit post                                         | :heavy_check_mark:    |
+| Like post                                         | :heavy_check_mark:    |
+| Comment post                                      | :heavy_check_mark:    |
+| Delete post                                       | :heavy_check_mark:    |
 | Search post                                       | :x:                   |
-| Signup user                                       | :x:                   |
-| Login user (With forget password, remember me)    | :x:                   |
+| Follow user                                       | :x:                   |
+| Personalized feed                                 | :x:                   |
+| Signup user                                       | :heavy_check_mark:    |
+| Login user (With forget password, remember me)    | (Remember me only)    |
 
 More features coming soon...
