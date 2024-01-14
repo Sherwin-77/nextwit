@@ -92,6 +92,7 @@ export default function SignUp() {
             id="username"
             className="px-3 py-2 mb-5 dark:bg-slate-700 text-black dark:text-white rounded-md dark:focus:outline-none dark:focus:ring dark:focus:ring-yellow-300 inline"
             onChange={(e) => setUsername(e.target.value)}
+            maxLength={30}
             required
           />
           {inputStatus.username ? (
@@ -130,6 +131,7 @@ export default function SignUp() {
               // LMAO hardcode size moment
               className="max-w-[250px] ps-3 pe-10 py-2 mb-3 dark:bg-slate-700 text-black dark:text-white rounded-md dark:focus:outline-none dark:focus:ring dark:focus:ring-yellow-300"
               onChange={(e) => setPassword(e.target.value)}
+              minLength={8}
               required
             />
             <div onClick={() => setPasswordHidden((prev) => !prev)}>

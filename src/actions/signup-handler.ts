@@ -18,7 +18,12 @@ export default async function handleSignup(prevState: any, formData: FormData) {
                 email: email
             })
         })
-        const msg = await res.text()
+        let msg = ''
+        const contentType = res.headers.get("content-type")
+        if(contentType && contentType.indexOf("application/json") !== -1){
+            const data = await res.json()
+            msg = data?.error?.msg ?? "Unknown error"
+        } else msg = await res.text()
         if(!res.ok) return {message: msg, isError: true}
         return {message: "Successfully signup", isError: false, redirect: true}
     } catch {

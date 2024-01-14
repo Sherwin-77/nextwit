@@ -1,6 +1,8 @@
 export interface UserSimple {
     _id: string;
     username: string;
+    email: string;
+    bio?: string;
     profile?: string;
 }
 

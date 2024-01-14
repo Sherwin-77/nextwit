@@ -11,7 +11,7 @@ const initialState = {
 };
 
 // https://react.dev/reference/react-dom/hooks/useFormStatus#useformstatus-will-not-return-status-information-for-a-form-rendered-in-the-same-component
-function Submit() {
+function SubmitButton() {
   const { pending } = useFormStatus();
   return (
     <button
@@ -49,7 +49,7 @@ export default function SendComment({
     }
   }, [state])
   return (
-    <div className="my-3 pb-5 px-8">
+    <div className="my-3 pb-5 px-8 py-1">
       <form
         className="flex flex-col"
         action={(formData: FormData) => {
@@ -68,7 +68,7 @@ export default function SendComment({
             name="contents"
             onKeyDown={onEnter}
           />
-          <Submit />
+          <SubmitButton />
           <span
             className={
               "flex justify-end " +

@@ -15,11 +15,24 @@ interface UserResponse {
   contents: UserPost[];
 }
 
-export default function ProfilePage({user, session, status}: {user: UserResponse, session: Session | null, status: "authenticated" | "unauthenticated"}) {
+export default function ProfilePage({
+  user,
+  session,
+  status,
+}: {
+  user: UserResponse;
+  session: Session | null;
+  status: "authenticated" | "unauthenticated";
+}) {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   useEffect(() => {
-    if(user) window.history.replaceState(window.history.state, '', `/profile/${user.username}`);
-  })
+    if (user)
+      window.history.replaceState(
+        window.history.state,
+        "",
+        `/profile/${user.username}`
+      );
+  });
   return (
     <main className="w-full flex justify-center items-stretch">
       <div className="ms-10 m-3 max-w-5xl w-full flex flex-col">
@@ -33,14 +46,14 @@ export default function ProfilePage({user, session, status}: {user: UserResponse
                 height={80}
                 className="border rounded-full mb-3 me-5"
               />
-              <span className="font-bold">@{user.username}</span>
-              {user.bio ? 
-              <p>{user.bio}</p>
-              : 
-              <p className="opacity-50">No bio yet</p>
-              }
+              <span className="block font-bold mb-5">@{user.username}</span>
+              {user.bio ? (
+                <p className="whitespace-pre-wrap">{user.bio}</p>
+              ) : (
+                <p className="opacity-50">No bio yet</p>
+              )}
             </div>
-            {user?.contents.map((data, i) => (
+            {user?.contents.toReversed().map((data, i) => (
               <Post key={i} props={data} status={status} session={session} />
             ))}
           </>

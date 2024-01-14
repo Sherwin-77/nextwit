@@ -6,6 +6,7 @@ import { signIn, useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useState } from "react";
 import Loading from "@/app/loading";
+import Link from "next/link";
 
 export default function LoginPage() {
   const [err, setErr] = useState<string | null>(null);
@@ -41,7 +42,7 @@ export default function LoginPage() {
           });
           setLoading(false);
           if (!res || res.error) {
-            setErr("invalid email or password");
+            setErr(res?.error ?? "Invalid username/password");
           }
         }}
       >
@@ -52,6 +53,7 @@ export default function LoginPage() {
             name="username"
             id="username"
             placeholder=""
+            maxLength={30}
             required
           />
           <label
@@ -68,6 +70,7 @@ export default function LoginPage() {
             id="password"
             className="border border-gray-400 dark:border-none ps-3 pe-10 peer pt-5 pb-2 dark:bg-slate-700 text-black dark:text-white rounded-md dark:focus:outline-none dark:focus:ring dark:focus:ring-yellow-300"
             placeholder=""
+            minLength={8}
             required
           />
             <label
@@ -114,12 +117,12 @@ export default function LoginPage() {
         />
         <span className="mt-3 mb-1">
           <span className="opacity-60">Don't have account?</span>{" "}
-          <a
+          <Link
             className="no-underline hover:underline opacity-100 text-sky-600"
             href="/signup"
           >
             Sign up
-          </a>
+          </Link>
         </span>
       </form>
     </main>

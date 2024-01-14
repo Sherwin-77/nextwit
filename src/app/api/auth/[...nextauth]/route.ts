@@ -38,11 +38,12 @@ export const authOptions = {
           },
           body: JSON.stringify(payload),
         });
-
-        const user = await res.json();
+        
         if (!res.ok) {
-          throw new Error(user.message);
+          const txt = await res.text()
+          throw new Error(txt);
         }
+        const user = await res.json();
         // If no error and we have user data, return it
         if (res.ok && user) {
           return user;
@@ -50,7 +51,7 @@ export const authOptions = {
 
         // Return null if user data could not be retrieved
         return null;
-      },
+      }
     }),
     // GoogleProvider({
     //     clientId: process.env.GOOGLE_CLIENT_ID,
@@ -67,7 +68,6 @@ export const authOptions = {
         token = {
           ...token,
           user: user,
-          id: user.id,
           accessToken: user.accessToken,  // Credential authorize have accessToken field
           expiredAt: user.expiredAt
         };
@@ -83,6 +83,20 @@ export const authOptions = {
       // console.log(session);
       return session;
     },
+  },
+  events: {
+    signOut: async ({ session, token }: {session: Session, token: JWT}) => {
+      if(token){
+        await fetch(`${process.env.NEXT_API_URL}/signout`, {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.accessToken}`
+          },
+          body: JSON.stringify({all: false}),
+        })
+      }
+    }
   }
 }
 

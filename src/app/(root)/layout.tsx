@@ -3,7 +3,7 @@
 import NavBar from "@/components/navbar"
 import { useEffect, useRef, useState } from "react"
 import { PostContext } from "@/contexts/PostContext"
-import { UserPost } from "@/@types/user-post"
+import { UserPost, UserPostDetailed } from "@/@types/user-post"
 import { signOut, useSession } from "next-auth/react"
 
 
@@ -31,19 +31,7 @@ export default function ClientLayout({
       window.removeEventListener("scroll", navbarScroll)
     }
   })
-  const [posts, setPosts] = useState<UserPost[]>([{
-    _id: "Any",
-    contents: "This is caption of contents lorem",
-    author: {
-      _id: "anyID",
-      username: "SewentySewen"
-    },
-    images: ["/tes.jpg"],
-    comments: [],
-    likes: [],
-    dateCreated: new Date().toDateString(),
-    _v: 1
-  }])
+  const [posts, setPosts] = useState<(UserPost | UserPostDetailed)[]>([])
   if(status == "authenticated" && session.isExpired){
     signOut({redirect: false}).then()
     return
