@@ -47,7 +47,7 @@ export default function SendComment({
         state.message = null;
         router.refresh();
     }
-  }, [state])
+  }, [state, router])
   return (
     <div className="my-3 pb-5 px-8 py-1">
       <form

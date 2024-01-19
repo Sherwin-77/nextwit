@@ -42,7 +42,7 @@ export default function NavBar({session, status}: {session: Session | null, stat
         setImageUrl(r.profile)
       );
     }
-  }, [status]);
+  }, [status, session]);
   return (
     <Disclosure as="nav" className="bg-sky-500/30 dark:bg-indigo-500/30 backdrop-blur-xl">
       {({ open }) => (
@@ -118,7 +118,7 @@ export default function NavBar({session, status}: {session: Session | null, stat
                         <span className="absolute -inset-1.5" />
                         <span className="sr-only">Open user menu</span>
                         {imageUrl ? (
-                          <img
+                          <Image
                             className="h-8 w-8 rounded-full"
                             src={imageUrl}
                             alt="Profilos imagos"

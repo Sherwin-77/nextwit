@@ -70,7 +70,7 @@ export default function SettingPage({
       state.message = null,
       router.refresh()
     }
-  }, [state]);
+  }, [state, router]);
   if (!showWarning) {
     (state.message = null), (state.isError = false);
     if (oldPassword) setOldPassword("");

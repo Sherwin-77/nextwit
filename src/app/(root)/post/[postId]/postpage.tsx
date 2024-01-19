@@ -55,28 +55,28 @@ export default function PostPage({
   // Force refresh and sync with home (Temporary fix, check out FIXME at page.tsx)
   useEffect(() => {
     if (!refreshed.current) return;
-    let skip = false;
-    const newPost = posts.map((v) => {
-      if (v._id === post._id) {
-        if (
-          v.comments.length === post.comments.length &&
-          v.likes.length === post.likes.length &&
-          v.contents === post.contents
-        ) {
-          skip = true;
-          return v;
-        }
-        return post;
-      } else return v;
+    setPosts((prev) => {
+      const newPost = prev.map((v) => {
+        if (v._id === post._id) {
+          if (
+            v.comments.length === post.comments.length &&
+            v.likes.length === post.likes.length &&
+            v.contents === post.contents
+          ) {
+            return v;
+          }
+          return post;
+        } else return v;
+      });
+      return newPost
     });
-    if (!skip) setPosts(newPost);
-  }, [post]);
+  }, [post, setPosts]);
   useEffect(() => {
     if (!refreshed.current) {
       refresh();
       refreshed.current = true;
     }
-  }, [status]);
+  }, [status, refresh]);
 
   const handleLike = (e: any) => {
     e.stopPropagation();

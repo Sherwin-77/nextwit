@@ -9,7 +9,7 @@ import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { Session } from "next-auth";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect, Fragment, useMemo } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import ConfirmPopup from "./confirm-popup";
 import Link from "next/link";
@@ -29,7 +29,7 @@ export default function Post({
   if (props.images.length > 2) oneWidth = 255;
 
   // See: https://github.com/vercel/next.js/discussions/38263#discussioncomment-3070160
-  const createdAt = new Date(props.dateCreated);
+  const createdAt = useMemo(() => new Date(props.dateCreated), [props.dateCreated])
   const [curDate, setCurDate] = useState(createdAt.toDateString());
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(props.likes.length);
@@ -75,12 +75,12 @@ export default function Post({
         minute: "2-digit",
       })
     );
-  });
+  }, [createdAt]);
   useEffect(() => {
     if (status == "authenticated") {
       setLiked(props.likes.indexOf(session?.user.id) != -1);
     }
-  }, [status]);
+  }, [status, props.likes, session]);
   return (
     <>
       <ConfirmPopup

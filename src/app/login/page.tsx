@@ -116,7 +116,7 @@ export default function LoginPage() {
           doPending={loading}
         />
         <span className="mt-3 mb-1">
-          <span className="opacity-60">Don't have account?</span>{" "}
+          <span className="opacity-60">Don&apos;t have account?</span>{" "}
           <Link
             className="no-underline hover:underline opacity-100 text-sky-600"
             href="/signup"
