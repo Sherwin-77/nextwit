@@ -90,7 +90,7 @@ export default function SignUp() {
             type="text"
             name="username"
             id="username"
-            className="px-1 md:px-3 py-2 dark:bg-slate-700 text-black dark:text-white rounded-md dark:focus:outline-none dark:focus:ring dark:focus:ring-yellow-300 inline"
+            className="px-3 py-2 dark:bg-slate-700 text-black dark:text-white rounded-md dark:focus:outline-none dark:focus:ring dark:focus:ring-yellow-300 inline"
             onChange={(e) => setUsername(e.target.value)}
             maxLength={30}
             required
@@ -109,7 +109,7 @@ export default function SignUp() {
             name="email"
             type="email"
             id="email"
-            className="px-1 md:px-3 py-2 dark:bg-slate-700 text-black dark:text-white rounded-md dark:focus:outline-none dark:focus:ring dark:focus:ring-yellow-300"
+            className="px-3 py-2 dark:bg-slate-700 text-black dark:text-white rounded-md dark:focus:outline-none dark:focus:ring dark:focus:ring-yellow-300"
             onChange={(e) => setEmail(e.target.value)}
             required
           />
@@ -129,7 +129,7 @@ export default function SignUp() {
               name="password"
               id="password"
               // LMAO hardcode size moment
-              className="max-w-[235px] md:max-w-[250px] ps-3 pe-10 py-2 box-border dark:bg-slate-700 text-black dark:text-white rounded-md dark:focus:outline-none dark:focus:ring dark:focus:ring-yellow-300"
+              className="px-3 py-2 box-border dark:bg-slate-700 text-black dark:text-white rounded-md dark:focus:outline-none dark:focus:ring dark:focus:ring-yellow-300"
               onChange={(e) => setPassword(e.target.value)}
               minLength={8}
               required

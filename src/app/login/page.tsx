@@ -49,7 +49,7 @@ export default function LoginPage() {
         <div className="relative inline-block mb-5">
           <input
             type="text"
-            className="border border-gray-400 dark:border-none ps-3 pe-10 peer pt-5 pb-2 dark:bg-slate-700 text-black dark:text-white rounded-md dark:focus:outline-none dark:focus:ring dark:focus:ring-yellow-300"
+            className="border border-gray-400 dark:border-none ps-3  md:pe-10 peer pt-5 pb-2 dark:bg-slate-700 text-black dark:text-white rounded-md dark:focus:outline-none dark:focus:ring dark:focus:ring-yellow-300"
             name="username"
             id="username"
             placeholder=""
@@ -68,7 +68,7 @@ export default function LoginPage() {
             type={passwordHidden ? "password" : "text"}
             name="password"
             id="password"
-            className="border border-gray-400 dark:border-none ps-3 pe-10 peer pt-5 pb-2 dark:bg-slate-700 text-black dark:text-white rounded-md dark:focus:outline-none dark:focus:ring dark:focus:ring-yellow-300"
+            className="border border-gray-400 dark:border-none ps-3 md:pe-10 peer pt-5 pb-2 dark:bg-slate-700 text-black dark:text-white rounded-md dark:focus:outline-none dark:focus:ring dark:focus:ring-yellow-300"
             placeholder=""
             minLength={8}
             required

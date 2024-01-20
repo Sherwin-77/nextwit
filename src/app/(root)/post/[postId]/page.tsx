@@ -14,7 +14,7 @@ export async function generateMetadata(
   { params, searchParams }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const dt = await fetch(`${process.env.NEXT_API_URL}/post/${params.postId}`, {next: {revalidate: 60}});
+  const dt = await fetch(`${process.env.NEXT_API_URL}/post/${atob(params.postId)}`, {next: {revalidate: 60}});
   if (!dt.ok)
     return {
       title: "Post",
@@ -24,7 +24,7 @@ export async function generateMetadata(
   const previousImages = (await parent).openGraph?.images || [];
 
   return {
-    title: `${post.author.username} 's Post` ?? "Profile",
+    title: `@${post.author.username}'s Post`,
     description: post.contents,
     openGraph: {
       images: previousImages,
