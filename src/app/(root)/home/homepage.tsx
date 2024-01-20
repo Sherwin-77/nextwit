@@ -10,7 +10,7 @@ export default function HomePage() {
     if(session?.isExpired) signOut()
     return (
         <main className="w-full flex justify-center items-stretch">
-            <div className="max-w-2xl ms-10 m-3 w-full flex flex-col">
+            <div className="max-w-2xl mx-10 w-full flex flex-col">
                 {status === "authenticated" && <UploadPost session={session} />}
                 <InfinitePost session={session} status={status} />
             </div>

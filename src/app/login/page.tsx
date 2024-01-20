@@ -18,7 +18,7 @@ export default function LoginPage() {
   if (status === "authenticated" && session.user) return redirect("/home");
   return (
     <main className="flex flex-col justify-center items-center p-10">
-      <h1 className="text-3xl mb-10">Login</h1>
+      <h1 className="text-3xl mb-10 uppercase">Login</h1>
       <form
         className="border border-gray-300 shadow-md dark:border-none max-w-xs dark:bg-gray-900 dark:shadow-neon rounded-xl py-5 px-5 flex flex-col"
         onSubmit={async (e) => {

@@ -5,6 +5,7 @@ import {
   HeartIcon as FullHeartIcon,
   TrashIcon,
   PencilSquareIcon,
+  ShareIcon,
 } from "@heroicons/react/24/solid";
 import { ChatBubbleOvalLeftIcon, HeartIcon } from "@heroicons/react/24/outline";
 import { Session } from "next-auth";
@@ -183,10 +184,10 @@ export default function PostPage({
           </Transition.Child>
         </Dialog>
       </Transition>
-      <main className="w-full flex justify-around items-stretch p-12 flex flex-col">
-        <article className="border py-5 px-8 border-gray-400 dark:border-gray-600 bg-sky-100 dark:bg-gray-900 rounded-md w-full mb-8">
+      <main className="w-full flex justify-around items-stretch p-5 md:p-12 flex flex-col">
+        <article className="border py-5 px-3 border-gray-400 dark:border-gray-600 bg-sky-100 dark:bg-gray-900 rounded-md w-full mb-8">
           <div className="flex">
-            <span className="flex items-center mb-5">
+            <span className="flex items-center mb-5 flex-wrap overflow-hidden">
               <Link
                 className="flex items-center gap-3"
                 href={`/profile/${post.author.username}`}
@@ -199,17 +200,17 @@ export default function PostPage({
                     alt="Profile"
                   />
                 ) : (
-                  <UserCircleIcon className="h-auto w-[50px]" />
+                  <UserCircleIcon className="h-auto w-10" />
                 )}
-                <span className="font-bold">@{post.author.username}</span>
+                <span className="font-bold break-all">@{post.author.username}</span>
               </Link>
-              <span className="ms-5 text-slate-500">{curDate}</span>
+              <span className="md:ms-5 text-slate-500">{curDate}</span>
             </span>
             {session &&
               session.user.id == post.author._id &&
               !isEditing &&
               !deletePrompt && (
-                <div className="ms-auto flex gap-3 [&>*]:h-8 [&>*:hover]:cursor-pointer [&>*]:rounded-full [&>*]:p-1">
+                <div className="ms-3 md:ms-auto flex gap-3 [&>*]:h-8 [&>*:hover]:cursor-pointer [&>*]:rounded-full [&>*]:p-1">
                   <PencilSquareIcon
                     className="hover:bg-blue-500"
                     onClick={() => setIsEditing(true)}
@@ -221,7 +222,7 @@ export default function PostPage({
                 </div>
               )}
           </div>
-          <p className="whitespace-pre-wrap mb-5">{post.contents}</p>
+          <p className="whitespace-pre-wrap break-words mb-5">{post.contents}</p>
           <div className="flex gap-5">
             <div className="flex gap-1 justify-center items-center aligns-center hover:cursor-pointer hover:">
               {liked ? (
@@ -276,7 +277,7 @@ export default function PostPage({
                       />
                     )}
                 </div>
-                <p className="p-1">{obj.contents}</p>
+                <p className="p-1 break-words">{obj.contents}</p>
               </div>
             );
           })}

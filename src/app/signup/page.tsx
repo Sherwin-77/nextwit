@@ -77,7 +77,7 @@ export default function SignUp() {
   }
   return (
     <main className="flex flex-col justify-center items-center p-10">
-      <h1 className="text-3xl mb-10">Get your account now</h1>
+      <h1 className="text-3xl mb-10 uppercase">Get your account now</h1>
       <form
         action={formAction}
         className="max-w-xs bg-sky-600 dark:bg-gray-900 dark:shadow-neon rounded-xl py-3 ps-5 pe-2 flex flex-col"
@@ -85,12 +85,12 @@ export default function SignUp() {
         <label htmlFor="username" className="mb-1">
           Username
         </label>
-        <div>
+        <div className="mb-5">
           <input
             type="text"
             name="username"
             id="username"
-            className="px-3 py-2 mb-5 dark:bg-slate-700 text-black dark:text-white rounded-md dark:focus:outline-none dark:focus:ring dark:focus:ring-yellow-300 inline"
+            className="px-1 md:px-3 py-2 dark:bg-slate-700 text-black dark:text-white rounded-md dark:focus:outline-none dark:focus:ring dark:focus:ring-yellow-300 inline"
             onChange={(e) => setUsername(e.target.value)}
             maxLength={30}
             required
@@ -104,12 +104,12 @@ export default function SignUp() {
         <label htmlFor="email" className="mb-1">
           Email
         </label>
-        <div>
+        <div className="mb-5">
           <input
             name="email"
             type="email"
             id="email"
-            className="px-3 py-2 mb-5 dark:bg-slate-700 text-black dark:text-white rounded-md dark:focus:outline-none dark:focus:ring dark:focus:ring-yellow-300"
+            className="px-1 md:px-3 py-2 dark:bg-slate-700 text-black dark:text-white rounded-md dark:focus:outline-none dark:focus:ring dark:focus:ring-yellow-300"
             onChange={(e) => setEmail(e.target.value)}
             required
           />
@@ -122,14 +122,14 @@ export default function SignUp() {
         <label htmlFor="password" className="mb-1">
           Password
         </label>
-        <div>
+        <div className="mb-5">
           <div className="relative inline-flex">
             <input
               type={passwordHidden ? "password" : "text"}
               name="password"
               id="password"
               // LMAO hardcode size moment
-              className="max-w-[250px] ps-3 pe-10 py-2 mb-3 dark:bg-slate-700 text-black dark:text-white rounded-md dark:focus:outline-none dark:focus:ring dark:focus:ring-yellow-300"
+              className="max-w-[235px] md:max-w-[250px] ps-3 pe-10 py-2 box-border dark:bg-slate-700 text-black dark:text-white rounded-md dark:focus:outline-none dark:focus:ring dark:focus:ring-yellow-300"
               onChange={(e) => setPassword(e.target.value)}
               minLength={8}
               required

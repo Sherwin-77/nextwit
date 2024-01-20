@@ -35,7 +35,7 @@ export default function ProfilePage({
   });
   return (
     <main className="w-full flex justify-center items-stretch">
-      <div className="ms-10 m-3 max-w-5xl w-full flex flex-col">
+      <div className="mx-5 max-w-5xl w-full flex flex-col">
         {user ? (
           <>
             <div className="border border-gray-500 rounded-xl p-5 mb-8">
