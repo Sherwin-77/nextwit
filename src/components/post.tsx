@@ -37,6 +37,10 @@ export default function Post({
   const [curDate, setCurDate] = useState(createdAt.toDateString());
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(props.likes.length);
+  // Some kind of bug when uploading
+  useEffect(() => {
+    setLikes(props.likes.length)
+  }, [props.likes, setLikes])
   const [deletePrompt, setDeletePrompt] = useState(false);
   const [copied, setCopied] = useState(false);
   const { push } = useRouter();
